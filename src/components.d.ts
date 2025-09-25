@@ -5,57 +5,98 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { FormConfig } from "./components/leedu-form/leedu-form";
+export { FormConfig } from "./components/leedu-form/leedu-form";
 export namespace Components {
-    interface MyComponent {
+    interface LeeduForm {
+        "config": FormConfig;
         /**
-          * The first name
+          * @default false
          */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
+        "disabled": boolean;
+        "formUrl": string;
+    }
+    interface LeeduFormTest {
+        "submitUrl": string;
     }
 }
+export interface LeeduFormCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLeeduFormElement;
+}
+export interface LeeduFormTestCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLLeeduFormTestElement;
+}
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLLeeduFormElementEventMap {
+        "formSubmit": { data: any; isValid: boolean };
+        "formReset": void;
+        "fieldChange": { fieldName: string; value: any; formData: any };
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    interface HTMLLeeduFormElement extends Components.LeeduForm, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLeeduFormElementEventMap>(type: K, listener: (this: HTMLLeeduFormElement, ev: LeeduFormCustomEvent<HTMLLeeduFormElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLeeduFormElementEventMap>(type: K, listener: (this: HTMLLeeduFormElement, ev: LeeduFormCustomEvent<HTMLLeeduFormElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLLeeduFormElement: {
+        prototype: HTMLLeeduFormElement;
+        new (): HTMLLeeduFormElement;
+    };
+    interface HTMLLeeduFormTestElementEventMap {
+        "formSubmit": { data: any; type: 'error'| 'success' };
+    }
+    interface HTMLLeeduFormTestElement extends Components.LeeduFormTest, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLLeeduFormTestElementEventMap>(type: K, listener: (this: HTMLLeeduFormTestElement, ev: LeeduFormTestCustomEvent<HTMLLeeduFormTestElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLLeeduFormTestElementEventMap>(type: K, listener: (this: HTMLLeeduFormTestElement, ev: LeeduFormTestCustomEvent<HTMLLeeduFormTestElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLLeeduFormTestElement: {
+        prototype: HTMLLeeduFormTestElement;
+        new (): HTMLLeeduFormTestElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "leedu-form": HTMLLeeduFormElement;
+        "leedu-form-test": HTMLLeeduFormTestElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
+    interface LeeduForm {
+        "config"?: FormConfig;
         /**
-          * The first name
+          * @default false
          */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
+        "disabled"?: boolean;
+        "formUrl"?: string;
+        "onFieldChange"?: (event: LeeduFormCustomEvent<{ fieldName: string; value: any; formData: any }>) => void;
+        "onFormReset"?: (event: LeeduFormCustomEvent<void>) => void;
+        "onFormSubmit"?: (event: LeeduFormCustomEvent<{ data: any; isValid: boolean }>) => void;
+    }
+    interface LeeduFormTest {
+        "onFormSubmit"?: (event: LeeduFormTestCustomEvent<{ data: any; type: 'error'| 'success' }>) => void;
+        "submitUrl"?: string;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "leedu-form": LeeduForm;
+        "leedu-form-test": LeeduFormTest;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "leedu-form": LocalJSX.LeeduForm & JSXBase.HTMLAttributes<HTMLLeeduFormElement>;
+            "leedu-form-test": LocalJSX.LeeduFormTest & JSXBase.HTMLAttributes<HTMLLeeduFormTestElement>;
         }
     }
 }

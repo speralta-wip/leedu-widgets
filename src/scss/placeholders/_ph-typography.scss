@@ -1,0 +1,86 @@
+@use '../utils';
+
+%typo-links-01 {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(2.2);
+    line-height: auto;
+    letter-spacing: 0;
+
+    text-decoration: underline;
+}
+
+%typo-links-02 {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(1.3);
+    line-height: utils.hem(1.6);
+    letter-spacing: 0;
+}
+
+%typo-links-03 {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(1.6);
+    line-height: auto;
+    letter-spacing: 0;
+
+    text-decoration: underline;
+}
+
+%typo-text-default {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(1.6);
+    line-height: auto;
+    letter-spacing: 0;
+}
+
+%typo-text-smaller {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(1.4);
+    line-height: auto;
+    letter-spacing: 0;
+}
+
+%typo-text-default-bold {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(1.4);
+    line-height: auto;
+    letter-spacing: 0;
+}
+
+%typo-text-default-small {
+    font-family: utils.$typo-base-font-family;
+    font-style: Regular;
+    // font-weight: 400;
+    font-size: utils.hem(1.5);
+    line-height: utils.hem(2.2);
+    letter-spacing: 0;
+}
+
+%typo-heading-h2 {
+    font-family: utils.$typo-heading-font-family;
+    font-style: SemiBold;
+    font-weight: 600;
+    font-size: utils.hem(2.4);
+    line-height: auto;
+    letter-spacing: 0;
+}
+
+%typo-heading-h3 {
+    font-family: utils.$typo-heading-font-family;
+    font-style: SemiBold;
+    font-weight: 600;
+    font-size: utils.hem(1.5);
+    line-height: auto;
+    letter-spacing: 0;
+}

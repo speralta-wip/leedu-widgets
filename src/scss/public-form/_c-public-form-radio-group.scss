@@ -1,0 +1,24 @@
+@use "../utils";
+
+.c-public-form-radio-group{
+    .radio-group{
+        &__wrapper,
+        &__items{
+            display: grid;
+            grid-template-columns: minmax(0,1fr);
+        }
+        &__wrapper{
+            gap: utils.hem(1.2);
+        }
+        &__title{
+            color: var(--leedu-form-label-color);
+            font-size: utils.hem(1.4);
+            font-weight: 700;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        &__items{
+            gap: utils.hem(.9);
+        }
+    }
+}

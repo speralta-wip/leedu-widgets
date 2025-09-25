@@ -1,0 +1,47 @@
+@use "../utils";
+
+.l-public-form {
+    font-family: var(--leedu-form-font-family);
+    background-color: var(--leedu-form-bg);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    min-height: 100vh;
+    .c-public-form {
+        width: min(utils.hem(80), 100%);
+    }
+    h1,
+    h1 > p {
+        font-size: utils.hem(3);
+        line-height: 1.5;
+        color: var(--leedu-form-title-color);
+    }
+    p {
+        font-size: utils.hem(1.6);
+        font-weight: 400;
+        color: var(--leedu-form-txt-color);
+    }
+    .layout {
+        &__head,
+        &__footer {
+            width: min(utils.hem(80), 100%);
+            padding: utils.hem(4) utils.hem(2) utils.hem(2);
+            text-align: center;
+        }
+        &__head {
+            display: flex;
+            flex-flow: column;
+            gap: utils.hem(2);
+            justify-content: center;
+            align-items: center;
+            h1,
+            p {
+                margin: 0;
+            }
+            img {
+                width: fit-content;
+                max-height: utils.hem(5);
+            }
+        }
+    }
+}

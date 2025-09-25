@@ -1,0 +1,8 @@
+/*Vendor styles (possibly scss) import*/
+// @import "~@splidejs/splide/css";
+// @import "~@splidejs/splide/dist/css/splide-core.min.css";
+@use '@splidejs/react-splide/css/core';
+
+//here import local overrides
+@use 'v-splide';
+@use 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';

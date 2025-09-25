@@ -1,0 +1,96 @@
+@use '../utils';
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: utils.$doc-bg-color;
+    color: utils.$doc-fg-color;
+    box-sizing: border-box;
+    //scroll-behavior: smooth; /* Supported by firefox and Chrome only. Use a fallback for unsupported browsers, if you need. */
+    /**
+     * We are assuming to be dealing with a browser set to ‘medium’ text.
+     * The default size for ‘medium’ text in all modern browsers is 16px
+     * We'll be using rem unit throughout the project, this meaning that
+     * if you need to reduce the base font size for the entire document
+     * you can simply edit this percentage value.
+     * Ref: https://snook.ca/archives/html_and_css/font-size-with-rem
+     */
+    font-size: utils.$typo-global-font-size;
+
+    *,
+    *:before,
+    *:after {
+        /**
+         * Use inheritance here in order to make easier
+         * to change the box-sizing in plugins or other components that leverage other behavior.
+         * Credits: Jonathan Neal http://blog.teamtreehouse.com/box-sizing-secret-simple-css-layouts#comment-50223
+         */
+        box-sizing: inherit;
+    }
+    .loading,
+    .loading-cta {
+        cursor: wait !important;
+    }
+}
+
+
+a {
+    color: currentColor;
+    &:hover {
+        color: currentColor;
+    }
+}
+
+img,
+figure,
+picture {
+    display: block;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+figure {
+    margin: 0;
+}
+
+ul,
+ol,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+// HIDE PRINT TEMPLATE on screen media query
+// do not edit this class
+// -----------------------------------------
+
+#print-template {
+    display: none;
+}
+
+button,
+a {
+    transition: all 350ms ease-out;
+}
+
+
+/*
+:host{
+    --leedu-form-font-family: '';
+    --leedu-form-bg: white;
+    --leedu-form-txt-color: black;
+    --leedu-form-label-color: black;
+    --leedu-form-title-color: blue;
+    --leedu-form-btn-color: orange;
+    --leedu-form-btn-text-color: white;
+    --leedu-form-btn-border-radius: 4px;
+    --leedu-form-check-radio-color: orange;
+    --leedu-form-field-border-color: orange;
+    --leedu-form-field-border-radius: 4px;
+}*/

@@ -1,0 +1,37 @@
+@use '../utils';
+@use '../placeholders';
+
+.splide{
+    --v-splide-arrow-w: utils.hem(4.4);
+    --v-splide-arrow-h: utils.hem(3);
+    &__arrows{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__arrow{
+        opacity: 1;
+        color: getColor('light');
+        background-color: getColor('primary');
+        border-radius: 0;
+        height: var(--v-splide-arrow-h);
+        width: var(--v-splide-arrow-w);
+        padding: 0;
+        transform: none;
+        position: static;
+        svg{
+            transform:none;
+        }
+        &:disabled{
+            opacity: 1;
+            background-color: getColor('disabled');
+        }
+    }
+}
+
+@include utils.mediaTo(lg){
+    .splide{
+        --v-splide-arrow-w: utils.hem(8);
+        --v-splide-arrow-h: utils.hem(6);
+    }
+}

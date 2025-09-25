@@ -1,0 +1,29 @@
+@use '../utils';
+/* PLACEHOLDERS */
+%text-input-transparent {
+    background: transparent;
+    border: none;
+    appearance: none;
+    padding: utils.hem(0.5);
+    min-height: var(--input-min-height, utils.hem(1.7));
+    min-width: var(--input-min-width, utils.hem(2.1));
+    &:focus {
+        outline: none;
+    }
+}
+
+%text-input-stroked {
+    color: currentColor;
+    width: 100%;
+    padding: var(--input-y-padding, utils.hem(0.6)) var(--input-x-padding, utils.hem(1));
+    border: 1px solid var(--input-border-color, currentColor);
+    font-size: var(--input-f-size, utils.hem(1.3));
+    font-weight: var(--input-f-weight, #{utils.$typo-light});
+    line-height: var(--input-line-height, 1);
+    border-radius: utils.hem(0.4);
+    background-color: var(--input-bg-color, utils.getColor('white'));
+    &:focus {
+        outline: none;
+        border: 2px solid var(--input-border-color, currentColor);
+    }
+}

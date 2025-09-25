@@ -1,0 +1,18 @@
+@use "../utils";
+
+%component-padding {
+  padding: utils.hem(8) 0;
+  &.no-margin-bottom {
+    padding-bottom: 0;
+  }
+  @include utils.mediaTo(lg) {
+    padding: utils.hem(4) 0;
+  }
+}
+
+%absoluteCentered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

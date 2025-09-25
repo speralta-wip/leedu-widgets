@@ -1,0 +1,51 @@
+@use '../placeholders';
+@use '../utils';
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+input[type='tel'],
+select {
+    // @extend %text-input-transparent;
+}
+
+/*specific input number override*/
+input[type='number'] {
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+select {
+    &[multiple] {
+        min-height: utils.hem(10);
+    }
+}
+select,
+textarea {
+    // appearance: none;
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    min-height: utils.hem(20);
+    resize: none;
+}
+
+button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    &:focus {
+        outline: none;
+    }
+}

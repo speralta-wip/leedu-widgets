@@ -1,0 +1,23 @@
+@use "sass:map";
+
+$base-font-family: var(--base-font-family);
+$heading-font-family: var(--heading-font-family);
+/**
+     * We are assuming to be dealing with a browser set to ‘medium’ text.
+     * The default size for ‘medium’ text in all modern browsers is 16px
+     * We'll be using rem unit throughout the project, this meaning that
+     * if you need to reduce the base font size for the entire document
+     * you can simply edit this percentage value.
+     * Ref: https://snook.ca/archives/html_and_css/font-size-with-rem
+     */
+$global-font-size: 62.5%;
+
+/* FONT WEIGHTS*/
+$extra-bold: 800;
+$bold: 700;
+$semi-bold: 600;
+$medium: 500;
+$regular: 200;
+$semi-light: 150;
+$light: 100;
+

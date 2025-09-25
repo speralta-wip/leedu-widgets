@@ -1,0 +1,53 @@
+@use "../utils";
+
+.c-public-form-radio{
+    --leed-radio-opacity: 1;
+    display: flex;
+    align-items: center;
+    gap: utils.hem(1);
+    &:has(input:disabled){
+        --leed-radio-opacity: .5;
+    }
+    .pub-form-radio{
+        &__wrapper{
+            display: flex;
+            gap: utils.hem(1.3);
+            align-items: center;
+        }
+        &__disc{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: utils.hem(1.8);
+            height: utils.hem(1.8);
+            background-color: white;
+            border-radius: 50%;
+            border: 1px solid var(--leedu-form-field-border-color);
+            &:has(input:checked){
+                background-color: var(--leedu-form-check-radio-color);
+                border-color: var(--leedu-form-check-radio-color);
+            }
+            input{
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            &__overlay{
+                width: utils.hem(.6);
+                height: utils.hem(.6);
+                border-radius: 50%;
+                background-color: white;
+            }
+        }
+        &__label{
+            font-size: utils.hem(1.4);
+            font-weight: 700;
+            line-height: 1;
+            color: var(--leedu-form-txt-color);
+            opacity: var(--leed-radio-opacity);
+        }
+        &__reset{
+            text-decoration: underline;
+        }
+    }
+}

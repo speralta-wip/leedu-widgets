@@ -1,0 +1,23 @@
+@use "sass:map";
+@use "sass:meta";
+@use "u-custom-vars-gen" as gen;
+$doc-bg-color: #ffffff !default;
+$doc-fg-color: #000 !default;
+$colors-prefix: "theme-color" !default;
+$custom-colors: () !default;
+
+@function getColor($key: "primary") {
+  $colors: $custom-colors;
+  $default-color: map.get($colors, $key);
+    @if $default-color {
+      @return var(--#{$colors-prefix}-#{$key}, $default-color);
+    } @else {
+        @error "Not any color has been found with key: "#{$key}" into palette. Check key argument or add key to $custom-colors config list";
+    }
+    @return transparent;
+}
+
+@mixin generateColorsCustomVars() {
+    $colors: $custom-colors;
+    @include gen.vars($colors-prefix, $colors);
+}

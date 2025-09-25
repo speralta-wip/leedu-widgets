@@ -1,0 +1,13 @@
+@use "u-helper-fns" as helpers;
+
+@function var-name($sym, $name) {
+    @return '--#{$sym}-#{$name}';
+}
+
+@mixin vars($sym, $def) {
+    @include helpers.root-wrap {
+        @each $name, $val in $def {
+            #{var-name($sym, $name)}: #{$val};
+        }
+    }
+}

@@ -1,0 +1,27 @@
+/* -------
+CRITICALS:
+*/
+// @use "@/scss/criticals";
+
+/* -------
+BASICS:
+*/
+@use "basics";
+
+/* -------
+VENDORS:
+*/
+@use "vendors";
+
+/* -------
+COMPONENTS:
+*/
+// @use "@/scss/components";
+
+/* -------
+LAYOUTS
+*/
+
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;

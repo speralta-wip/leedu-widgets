@@ -1,0 +1,28 @@
+@use "sass:map";
+@use "sass:meta";
+@use "u-helper-fns" as helpers;
+@use "../config" as config;
+
+$config_vars: meta.module-variables('config');
+
+@forward "u-colors" with (
+    $colors-prefix: map.get($config_vars,'color-vars-prefix'),
+    $custom-colors: map.get($config_vars,'custom-colors'),
+    $doc-bg-color: map.get($config_vars,'doc-bg-color'),
+    $doc-fg-color: map.get($config_vars,'doc-fg-color'),
+);
+
+@forward "u-layout" with (
+    $viewports: map.get($config_vars,'viewports'),
+    $grid-mixin-defaults: map.get($config_vars,'grid-mixin-defaults'),
+    $container-pad-x: map.get($config_vars, 'container-pad-x'),
+    $container-max-width: map.get($config_vars, 'container-max-width'),
+);
+
+@forward "u-z-indexes" as zi-* with (
+    $zi-base-elements: map.get($config_vars,'zi-base-elements'),
+);
+
+@forward "u-typography" as typo-*;
+
+@forward "u-custom-vars-gen" as gen-*;

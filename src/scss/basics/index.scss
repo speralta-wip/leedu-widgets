@@ -1,0 +1,8 @@
+@use "b-normalize";//Normalize browser stiles
+/*
+base typography to elements (not classes) and/or important generic classes to apply because of
+project requirements
+*/
+@use "b-forms";// base ui form styles
+@use "b-scaffolding";//base setup to most important document elements
+

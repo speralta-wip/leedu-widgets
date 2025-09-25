@@ -1,0 +1,142 @@
+@use 'sass:map';
+@use 'sass:list';
+
+//VIEWPORTS
+$viewports: (
+    xxxl: 1600,
+    xxl: 1340,
+    xl: 1280,
+    lg: 1024,
+    md: 768,
+    sm: 320,
+) !default;
+
+//CONTAINER PAD X BY VIEWPORT
+$container-pad-x: (
+    sm: 20,
+    lg: 30,
+    xl: 80,
+) !default;
+
+//CONTAINER MAX WIDTH X BY VIEWPORT AND CONTAINER SIZE
+$container-max-width: (
+    'sm'
+        (
+            'small': 600,
+            'medium': 600,
+            'large': 960,
+        ),
+    'lg'
+        (
+            'small': 760,
+            'medium': 900,
+            'large': 960,
+        ),
+    'xl'
+        (
+            'small': 800,
+            'medium': 1100,
+            'large': 1500,
+        )
+) !default;
+
+//grid mixin default params
+$grid-mixin-defaults: (
+    cols: 12,
+    gapy: 20,
+    gapx: 20,
+) !default;
+
+@mixin containerPadVars() {
+    @if list.length($container-pad-x) > 0 {
+        @each $breakpoint, $value in $container-pad-x {
+            @if map.has-key($viewports, $breakpoint) {
+                @include mediaFrom($breakpoint) {
+                    :root {
+                        --main-container-pad-x: #{$value};
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin containerMaxWidthVars() {
+    @if list.length($container-max-width) > 0 {
+        @each $breakpoint, $containerSizes in $container-max-width {
+            :root {
+                @include mediaFrom($breakpoint) {
+                    @each $containerSize, $width in $containerSizes {
+                        --main-container-#{$containerSize}-maxwidth: #{$width};
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin mediaTo($viewportRef) {
+    $selectedViewport: map.get($viewports, $viewportRef);
+    $viewportTotal: $selectedViewport - 1;
+    @media screen and (max-width: $viewportTotal*1px) {
+        @content;
+    }
+}
+
+@mixin mediaFrom($viewportRef) {
+    $selectedViewport: map.get($viewports, $viewportRef);
+    $viewportTotal: $selectedViewport;
+    @media screen and (min-width: $viewportTotal*1px) {
+        @content;
+    }
+}
+
+@mixin print() {
+    @media print {
+        @content;
+    }
+}
+
+@mixin mainContainer($containerSize: 'large') {
+    width: calc(100% - (var(--main-container-pad-x) * 2px));
+    margin-left: auto;
+    margin-right: auto;
+    max-width: calc(var(--main-container-#{$containerSize}-maxwidth) * 1px);
+}
+
+@mixin grid(
+    $cols: map.get($grid-mixin-defaults, 'cols'),
+    $gapY: map.get($grid-mixin-defaults, 'gapy'),
+    $gapX: map.get($grid-mixin-defaults, 'gapx')
+) {
+    display: grid;
+    grid-template-columns: repeat($cols, 1fr);
+    gap: calc(#{$gapY} * 1px) calc(#{$gapX} * 1px);
+}
+
+@mixin flex($alignment: start, $justify: start) {
+    display: flex;
+    align-items: $alignment;
+    justify-content: $justify;
+}
+
+@function gapX($gap: map.get($grid-mixin-defaults, 'gapx')) {
+    @if $gap == null {
+        @error 'gapX function received null pointer reference. Please check your code';
+    }
+    @return calc(#{$gap} * 1px);
+}
+
+@function gapY($gap: map.get($grid-mixin-defaults, 'gapy')) {
+    @if $gap == null {
+        @error 'gapY function received null pointer reference. Please check your code';
+    }
+    @return calc(#{$gap} * 1px);
+}
+
+@function hem($size){
+    @if $size == null {
+        @error 'hem function received null pointer reference. Please check your code';
+    }
+    @return calc($size * var(--host-font-size, 10px));
+};

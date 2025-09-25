@@ -1,7 +1,11 @@
 import { Config } from '@stencil/core';
+import { sass } from '@stencil/sass';
 
 export const config: Config = {
   namespace: 'leedu-widgets',
+  plugins: [
+    sass(),
+  ],
   outputTargets: [
     {
       type: 'dist',
@@ -23,4 +27,9 @@ export const config: Config = {
   testing: {
     browserHeadless: "shell",
   },
+  devServer: {
+    port: 8080,                    // Cambia porta
+    openBrowser: true,             // Apri browser automaticamente
+    reloadStrategy: 'pageReload',  // Strategia di reload
+  }
 };

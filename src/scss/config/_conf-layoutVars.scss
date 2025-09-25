@@ -1,0 +1,59 @@
+// Map of viewports/breakpoints to be used for current project
+// $viewports: (
+//     xxxl: 1600,
+//     xxl: 1340,
+//     xl: 1280,
+//     lg: 1024,
+//     md: 768,
+//     sm: 320,
+// );
+
+//CONTAINER MAIN PAD X (starts from viewport target)
+// $container-pad-x:(
+//     sm: 20,
+//     lg: 30,
+//     xl: 100
+// );
+
+//CONTAINER MAX WIDTH X BY VIEWPORT AND CONTAINER SIZE
+// $container-max-width: (
+//     'sm'
+//     (
+//       'small': 600,
+//       'medium': 600,
+//       'large': 960
+//     ),
+//   'lg'
+//     (
+//       'small': 760,
+//       'medium': 900,
+//       'large': 960
+//     ),
+//   'xxl'
+//     (
+//       'small': 800,
+//       'medium': 1100,
+//       'large': 1500
+//     )
+// );
+
+/*grid mixin defaults */
+/*$grid-mixin-defaults: (
+    cols: 12,
+    gapy: 10,
+    gapx: 10,
+);*/
+/*
+Ordered List of base elements to define z-indexes into layout,
+indexes start from 1 so we can use zi-get() function from utils, i.e.: z-index: utils.zi-get('main')// 1
+*/
+$zi-base-elements: (
+    main,
+    rich-text,
+    header,
+    mainmenu,
+    footer,
+    modal,
+    notifications,
+    tooltip
+);

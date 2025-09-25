@@ -1,0 +1,73 @@
+$doc-bg-color: #ebf0f1; //set document background
+//$doc-fg-color: null;//set document color
+$color-vars-prefix: 'wip-color'; //prefix to apply to custom-vars at root (ie: --wip-color-primary: [color_value])'
+
+//Palette of colors to be used by getColor() function ie with utils module used into a component: utils.getColor('primary')
+//This list is default list but we can add/change key:values
+$custom-colors: (
+    'primary': #2b67ff,
+    'secondary': #f6891e,
+    'secondary-light': #fff4e9,
+    'secondary-medium': #fbe9d7,
+    'light-blue': #4cb5ff,
+    'white': #ffffff,
+    'light': #f8f8f8,
+    'darker': #202020,
+
+    'extra-light-grey': #fbfbfb,
+    'light-grey-1': #f5f5f5,
+    'light-grey': #ebf0f1,
+    'grey': #a4a4a4,
+    'grey-2': #afafaf,
+    'grey-3': #868686,
+    'dark-grey': #676767,
+
+    'item-active': #c2d6db,
+    'bg-light': #f5f5f5,
+    'borders': #afafaf,
+    'borders-light': #e8e8e8,
+    'th': #f1f4f6,
+
+    'text-default': #202020,
+    'text-light': #424242,
+    'text-lighter': #6f6f6f,
+    'text-placeholder': #6f6f6f,
+    'text-inverted': #ffffff,
+
+    'border-default': #c3c3c3,
+    'border-inactive': #e2e2e2,
+    'surface-inactive': #f1f1f1,
+    'surface-selected': #dae9f0,
+    'surface-default': #ffffff,
+
+    'primary-text-color': #f8f8f8,
+    'primary-surface-color': #2b67ff,
+    'primary-inactive': #afafaf,
+    'primary-stroke-color': #2b67ff,
+    'secondary-stroke-color': #2b67ff,
+    'secondary-text-color': #2b67ff,
+    'secondary-surface-color': #ffffff00,
+    'secondary-storke-color': #2b67ff,
+    'icon-default': #a4a4a4,
+    'tertiary-surface': #e2e2e2,
+
+    'surface': #535353,
+    'text': #202020,
+
+    'success-200': #e4f8e4,
+    'success-500': #149711,
+    'warning-200': #fff2df,
+    'warning-500': #ffa640,
+    'error-200': #ffeeee,
+    'error-500': #ef0000,
+    'info-200': #ecf8ff,
+    'info-500': #0086df,
+
+    'status-duplicato': #ffee6c,
+    'status-colloquio': #f6891e,
+    'status-partecipazione': #4cb5ff,
+    'status-adesione': #9747ff,
+    'status-iscritto': #05b80c,
+    'status-inserimento': #a4a4a4,
+    'status-non-interessato': #6f6f6f,
+);

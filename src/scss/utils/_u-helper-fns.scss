@@ -1,0 +1,29 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+
+@function enum($lst:[]) {
+    $ret: ();
+    @each $name in $lst {
+        $ret: map.set($ret, $name, list.index($lst, $name));
+    }
+    @return $ret;
+}
+
+@function seq($lst...) {
+    $ret: ();
+    @for $i from 1 through list.length($lst) {
+        $ret: map.set($ret, '#{$i}', list.nth($lst, $i))
+    }
+    @return $ret;
+}
+
+@mixin root-wrap() {
+    @if not & {
+        :root {
+            @content;
+        }
+    } @else {
+        @content;
+    }
+}

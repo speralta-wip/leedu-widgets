@@ -1,0 +1,33 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+@use "u-helper-fns" as helper;
+@use "u-custom-vars-gen" as gen;
+
+$prefix: 'zi';
+
+$zi-base-elements: (main, header, mainmenu, searchbar, sidebar, tips, modal, zoom) !default;
+
+$_elements-enum: helper.enum($zi-base-elements);
+
+@mixin rootVars(){
+    @include gen.vars($prefix, $_elements-enum)
+}
+
+@function get($key: "main",$localList:null) {
+    $theList: $zi-base-elements;
+    @if $localList and list.length($localList) > 0{
+        $theList: $localList;
+    }
+    @if list.index($theList,$key){
+        $z-index: list.index($theList,$key);
+        @if $localList {
+            @return $z-index;
+        }@else {
+            @return var(--#{$prefix}-#{$key}, $z-index);
+        }
+    }@else {
+        @error "No index for key: #{$key} was found into list: #{$theList}, please check argument passed to zi-get() or add item to list";
+    }
+    @return auto;
+}
