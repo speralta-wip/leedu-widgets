@@ -7,19 +7,20 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type                   | Default          |
-| ---------- | ---------- | ----------- | ---------------------- | ---------------- |
-| `config`   | `config`   |             | `FormConfig \| string` | `{ fields: [] }` |
-| `disabled` | `disabled` |             | `boolean`              | `false`          |
+| Property   | Attribute  | Description | Type         | Default     |
+| ---------- | ---------- | ----------- | ------------ | ----------- |
+| `config`   | `config`   |             | `FormConfig` | `undefined` |
+| `disabled` | `disabled` |             | `boolean`    | `false`     |
+| `formUrl`  | `form-url` |             | `string`     | `undefined` |
 
 
 ## Events
 
-| Event         | Description | Type                                                           |
-| ------------- | ----------- | -------------------------------------------------------------- |
-| `fieldChange` |             | `CustomEvent<{ fieldId: string; value: any; formData: any; }>` |
-| `formReset`   |             | `CustomEvent<void>`                                            |
-| `formSubmit`  |             | `CustomEvent<{ data: any; isValid: boolean; }>`                |
+| Event         | Description | Type                                                             |
+| ------------- | ----------- | ---------------------------------------------------------------- |
+| `fieldChange` |             | `CustomEvent<{ fieldName: string; value: any; formData: any; }>` |
+| `formReset`   |             | `CustomEvent<void>`                                              |
+| `formSubmit`  |             | `CustomEvent<{ data: any; isValid: boolean; }>`                  |
 
 
 ----------------------------------------------

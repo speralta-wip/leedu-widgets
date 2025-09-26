@@ -1,7 +1,6 @@
 @use '../utils';
 
 %public-form-title {
-    //font-size: utils.hem(1.6);
     font-size: utils.hem(1.6);
     font-weight: 700;
     line-height: 1;
@@ -30,7 +29,7 @@ body {
     }
 }
 .c-public-form {
-    font-family: var(--leedu-form-font-family), sans-serif;
+    font-family: var(--leedu-form-font-family, 'sans-serif');
     .public-form {
         &__wrapper {
             background-color: var(--leedu-form-bg);
@@ -116,6 +115,14 @@ body {
                 * {
                     font-size: utils.hem(1);
                 }
+            }
+        }
+
+        &__generic-feedbacks{
+            font-size: utils.hem(1.4);
+            text-align: center;
+            .error-feedback{
+                color: utils.getColor('error-500');
             }
         }
     }

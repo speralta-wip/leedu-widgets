@@ -14,8 +14,8 @@
       "require": "./dist/leedu-widgets/leedu-widgets.cjs.js"
     },
     "./leedu-form": {
-      "import": "./dist/components/leedu-test-form.js",
-      "types": "./dist/components/leedu-test-form.d.ts"
+      "import": "./dist/components/leedu-form.js",
+      "types": "./dist/components/leedu-form.d.ts"
     },
     "./loader": {
       "import": "./loader/index.js",

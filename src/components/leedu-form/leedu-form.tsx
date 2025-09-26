@@ -59,6 +59,7 @@ export interface PublicFormResource {
 export interface FormConfig {
   title?: string;
   form?: PublicFormResource;
+  recaptcha_key?: string;
 }
 
 export interface SelectOption{
@@ -79,16 +80,23 @@ export interface HiddenInput{
 
 export class LeeduForm {
 
-  formEl!: HTMLFormElement;
+  private formEl!: HTMLFormElement;
+  private recaptchaInput: HTMLInputElement;
+
+  private googleFontsApiBaseUrl = 'https://fonts.googleapis.com';
+  private gStaticUrl = 'https://fonts.gstatic.com';
 
   @Prop() config: FormConfig;
   @Prop() formUrl: string;
   @Prop() disabled: boolean = false;
 
+  @State() recaptchaKey: string;
   @State() formData: { [key: string]: any } = {};
   @State() errors: { [key: string]: string } = {};
   @State() successMessage: string | null = null;
   @State() parsedConfig: FormConfig = {title: ''};
+  @State() fontsMap: Map<string,{source:string; cssFamily: string}> = new Map();
+  @State() fontFamily: string;
 
   @State() schoolYearOptions: SelectOption[] = [];
   @State() utmInputs: HiddenInput[] = [];
@@ -101,6 +109,13 @@ export class LeeduForm {
   watchConfig() {
     this.parseConfig();
   }
+  @Watch('recaptchaKey')
+  watchRecaptchaKey(){
+    if (!this.recaptchaKey) return;
+    const recaptchaScript: HTMLScriptElement = document.createElement("script");
+    recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${this.recaptchaKey}`;
+    document.head.appendChild(recaptchaScript);
+  }
 
   @Watch('parsedConfig')
   watchParsedConfig(){
@@ -108,11 +123,65 @@ export class LeeduForm {
     if (this.parsedConfig?.form?.has_year_of_interest){
       this.schoolYearOptions = schoolYearOptions(thisYear,false);
     }
+    if (this.parsedConfig?.recaptcha_key){
+      this.recaptchaKey = this.parsedConfig.recaptcha_key
+    }
+    this.loadFont();
   }
 
   componentWillLoad() {
+    this.loadMainFontLinks();
     this.parseConfig();
     this.loadUtmInputs();
+  }
+
+  private loadMainFontLinks(){
+    const linkTag1 = document.createElement("link");
+    linkTag1.rel = "preconnect";
+    linkTag1.href = this.googleFontsApiBaseUrl;
+    document.head.appendChild(linkTag1);
+
+    const linkTag2 = document.createElement("link");
+    linkTag2.rel = "preconnect";
+    linkTag2.href = this.gStaticUrl;
+    linkTag2.crossOrigin = 'true';
+    document.head.appendChild(linkTag2);
+  }
+
+  private loadFont() {
+    const targetFont = this.parsedConfig?.form?.style?.font_family ?? 'HankenGrotesk';
+
+    this.fontsMap.set('HankenGrotesk', {
+      source: '/css2?family=Hanken+Grotesk:ital,wght@0,100..700;1,100..700&display=swap',
+      cssFamily: '"Hanken Grotesk", sans-serif'
+    });
+    this.fontsMap.set('Poppins', {
+      source: '/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap',
+      cssFamily: '"Poppins", sans-serif'
+    });
+    this.fontsMap.set('RobotoMono', {
+      source: '/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap',
+      cssFamily: '"Roboto Mono", monospace'
+    });
+    this.fontsMap.set('Merriweather', {
+      source: '/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..700;1,18..144,300..700&display=swap',
+      cssFamily: '"Merriweather", serif'
+    });
+    this.fontsMap.set('BalsamiqSans', {
+      source: '/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap',
+      cssFamily: '"Balsamiq Sans", sans-serif'
+    });
+
+    if (this.fontsMap.has(targetFont)){
+      console.log('loadFont: ',targetFont);
+      const font = this.fontsMap.get(targetFont);
+      this.fontFamily = font.cssFamily;
+      const gFontLink = document.createElement("link");
+      gFontLink.href = `${this.googleFontsApiBaseUrl}${font.source}`;
+      gFontLink.rel = "stylesheet"
+      document.head.appendChild(gFontLink);
+    }
+
   }
 
   private parseConfig() {
@@ -168,18 +237,36 @@ export class LeeduForm {
     console.log(this.formData);
     e.preventDefault();
     this.errors = {};
+
     // @ts-ignore
-    const data = new FormData(this.formEl);
+    if (this.recaptchaKey && window.recaptcha){
+      this.recaptchaInput.value='';
     // @ts-ignore
-    const formJSON = Object.fromEntries(data.entries());
-    console.log('IS VALID:', this.errors);
+      window.grecaptcha.ready(()=> {
+    // @ts-ignore
+        window.grecaptcha.execute( this.recaptchaKey, {action: 'submit'}).then((token)=> {
+          console.log('TOKEN',token);
+          this.recaptchaInput.value = token;
+
+          this.submitForm();
+        });
+      });
+    } else {
+      await this.submitForm();
+    }
+
+  }
+
+  private submitForm = async ()=> {
     let response = null;
     let responseJson = null;
+    // @ts-ignore
+    const formData = new FormData(this.formEl);
     if (this.formUrl){
       try {
         response = await fetch(this.formUrl, {
           method:"POST",
-          body: data,
+          body: formData,
           headers: {
             'Accept': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
@@ -203,11 +290,12 @@ export class LeeduForm {
       }else{
         console.log('status', response, responseJson);
         this.errors = responseJson?.errors ?? {};
+        this.parsedConfig = responseJson?.form ? {...this.parsedConfig, form: responseJson?.form } : this.parsedConfig;
       }
     }
 
     this.formSubmit.emit({
-      data: data,
+      data: formData,
       isValid: true,
     });
   }
@@ -226,7 +314,7 @@ export class LeeduForm {
                 font-size:10px;
               }
               :host{
-                  --leedu-form-font-family: ${form.style.font_family};
+                  --leedu-form-font-family: ${this.fontFamily};
                   --leedu-form-bg: ${form.style.background_color};
                   --leedu-form-txt-color: ${form.style.text_color};
                   --leedu-form-label-color: ${form.style.label_color};
@@ -249,6 +337,9 @@ export class LeeduForm {
           <div class="public-form__wrapper">
             <div class="public-form__title">{title ?? ''}</div>
             <div class="public-form__main-fields">
+              { this.recaptchaKey !== null && (
+                <input type="hidden" name="g_recaptcha_response" ref={(el)=> this.recaptchaInput = el as HTMLInputElement}/>
+              )}
               <input
                 type="hidden"
                 name="referrer_url"
@@ -376,7 +467,7 @@ export class LeeduForm {
             <div class="public-form__acceptances">
               {/*PRIVACY*/}
               <CheckboxField name={'privacy_acceptance'} label={form?.style?.privacy_text ?? ''} value={1}
-                             required={true} onInputChange={this.handleInputChange} />
+                             required={false} onInputChange={this.handleInputChange} error={'privacy_acceptance' in this.errors ? this.errors['privacy_acceptance'] :null}/>
               {/*MARKETING*/}
               {Boolean(form?.has_newsletter_subscription) &&
                 <CheckboxField name={'newsletter_subscription'} label={form?.style?.newsletter_text ?? ''} value={1}
@@ -390,6 +481,14 @@ export class LeeduForm {
             >
               { this.successMessage ?? 'Invia'}
             </button>
+            <div class="public-form__generic-feedbacks">
+
+              {/*RECAPTCHA ERROR*/}
+              { 'g_recaptcha_response' in this.errors ? (
+                <span class={'error-feedback'}>{this.errors['g_recaptcha_response']}</span>
+              ) : null}
+
+            </div>
           </div>
         </form>
       </div>
