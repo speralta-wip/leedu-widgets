@@ -8,7 +8,7 @@
     align-items: center;
     min-height: 100vh;
     .c-public-form {
-        width: min(utils.hem(80), 100%);
+        width: min(#{utils.hem(80)}, 100%);
     }
     h1,
     h1 > p {
@@ -24,7 +24,7 @@
     .layout {
         &__head,
         &__footer {
-            width: min(utils.hem(80), 100%);
+            width: min(#{utils.hem(80)}, 100%);
             padding: utils.hem(4) utils.hem(2) utils.hem(2);
             text-align: center;
         }

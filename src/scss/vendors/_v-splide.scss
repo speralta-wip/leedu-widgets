@@ -2,8 +2,8 @@
 @use '../placeholders';
 
 .splide{
-    --v-splide-arrow-w: utils.hem(4.4);
-    --v-splide-arrow-h: utils.hem(3);
+    --v-splide-arrow-w: #{utils.hem(4.4)};
+    --v-splide-arrow-h: #{utils.hem(3)};
     &__arrows{
         display: flex;
         align-items: center;
@@ -31,7 +31,7 @@
 
 @include utils.mediaTo(lg){
     .splide{
-        --v-splide-arrow-w: utils.hem(8);
-        --v-splide-arrow-h: utils.hem(6);
+        --v-splide-arrow-w: #{utils.hem(8)};
+        --v-splide-arrow-h: #{utils.hem(6)};
     }
 }

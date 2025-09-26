@@ -9,6 +9,7 @@ interface CheckboxFieldProps {
   className?: string;
   checked?: boolean;
   onInputChange?: (name: string, value: any) => void;
+  disabled?: boolean;
 }
 
 export const CheckboxField: FunctionalComponent<CheckboxFieldProps> = ({
@@ -19,6 +20,7 @@ export const CheckboxField: FunctionalComponent<CheckboxFieldProps> = ({
                                                                          error,
                                                                          checked,
                                                                          onInputChange,
+                                                                          disabled
                                                                        }) => {
   const handleCheckbox = (e) => {
     const target = (e.target as HTMLInputElement);
@@ -36,6 +38,7 @@ export const CheckboxField: FunctionalComponent<CheckboxFieldProps> = ({
       <label class="pub-form-check__wrapper">
           <span class="pub-form-check__box">
             <input
+              disabled={disabled}
               type="checkbox"
               name={name}
               checked={checked ?? false}
