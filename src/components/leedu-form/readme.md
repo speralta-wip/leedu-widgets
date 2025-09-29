@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type         | Default     |
-| ---------- | ---------- | ----------- | ------------ | ----------- |
-| `config`   | `config`   |             | `FormConfig` | `undefined` |
-| `disabled` | `disabled` |             | `boolean`    | `false`     |
-| `formUrl`  | `form-url` |             | `string`     | `undefined` |
+| Property      | Attribute      | Description | Type      | Default     |
+| ------------- | -------------- | ----------- | --------- | ----------- |
+| `config`      | `config`       |             | `string`  | `undefined` |
+| `disabled`    | `disabled`     |             | `boolean` | `false`     |
+| `formUrl`     | `form-url`     |             | `string`  | `undefined` |
+| `previewOnly` | `preview-only` |             | `boolean` | `undefined` |
 
 
 ## Events

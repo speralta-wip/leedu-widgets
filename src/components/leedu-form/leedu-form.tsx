@@ -38,19 +38,19 @@ export interface EducationLevelBlock {
 
 
 export interface PublicFormResource {
-  id: number;
-  name: string;
-  title: string;
-  events_title: string;
-  has_parent_phone: boolean;
-  has_birthdate: boolean;
-  has_current_school: boolean;
-  has_current_grade: boolean;
-  has_parent_first_name: boolean;
-  has_parent_last_name: boolean;
-  has_newsletter_subscription: boolean;
-  has_year_of_interest: boolean;
-  allow_multiple_events: boolean;
+  id?: number;
+  name?: string;
+  title?: string;
+  events_title?: string;
+  has_parent_phone?: boolean;
+  has_birthdate?: boolean;
+  has_current_school?: boolean;
+  has_current_grade?: boolean;
+  has_parent_first_name?: boolean;
+  has_parent_last_name?: boolean;
+  has_newsletter_subscription?: boolean;
+  has_year_of_interest?: boolean;
+  allow_multiple_events?: boolean;
   style?: FormStyleResource;
   schools?: object;
   educationLevelGrades?: EducationLevelGradesResource;
@@ -86,7 +86,8 @@ export class LeeduForm {
   private googleFontsApiBaseUrl = 'https://fonts.googleapis.com';
   private gStaticUrl = 'https://fonts.gstatic.com';
 
-  @Prop() config: FormConfig;
+  @Prop() previewOnly: boolean;
+  @Prop() config: string;
   @Prop() formUrl: string;
   @Prop() disabled: boolean = false;
 
@@ -105,6 +106,7 @@ export class LeeduForm {
   @Event() formReset: EventEmitter<void>;
   @Event() fieldChange: EventEmitter<{ fieldName: string; value: any; formData: any }>;
 
+  @Watch('config')
   @Watch('formUrl')
   watchConfig() {
     this.parseConfig();
@@ -185,7 +187,6 @@ export class LeeduForm {
   }
 
   private parseConfig() {
-    this.parsedConfig = this.config ?? {};
     if (this.formUrl){
       fetch(`${this.formUrl}/json`)
         .then(resp=> resp.json())
@@ -198,6 +199,8 @@ export class LeeduForm {
           console.log(err);
           this.parsedConfig = {}
       })
+    }else{
+      this.parsedConfig = this.config ? JSON.parse(this.config) : {};
     }
   }
 
@@ -237,6 +240,7 @@ export class LeeduForm {
     console.log(this.formData);
     e.preventDefault();
     this.errors = {};
+    if (this.previewOnly) return;
 
     // @ts-ignore
     if (this.recaptchaKey && window.recaptcha){
@@ -301,7 +305,7 @@ export class LeeduForm {
   }
 
   render() {
-    const { title, form } = this.parsedConfig;
+    const { form } = this.parsedConfig;
 
     return (
       <div class={`form-container`}>
@@ -335,7 +339,7 @@ export class LeeduForm {
 
         <form onSubmit={(e) => this.handleSubmit(e)} class="leedu-form c-public-form" method={'POST'} ref={(el) => this.formEl = el as HTMLFormElement}>
           <div class="public-form__wrapper">
-            <div class="public-form__title">{title ?? ''}</div>
+            <div class="public-form__title">{form?.title ?? ''}</div>
             <div class="public-form__main-fields">
               { this.recaptchaKey !== null && (
                 <input type="hidden" name="g_recaptcha_response" ref={(el)=> this.recaptchaInput = el as HTMLInputElement}/>

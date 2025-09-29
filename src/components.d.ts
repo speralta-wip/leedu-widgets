@@ -5,16 +5,15 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { FormConfig } from "./components/leedu-form/leedu-form";
-export { FormConfig } from "./components/leedu-form/leedu-form";
 export namespace Components {
     interface LeeduForm {
-        "config": FormConfig;
+        "config": string;
         /**
           * @default false
          */
         "disabled": boolean;
         "formUrl": string;
+        "previewOnly": boolean;
     }
     interface LeeduFormTest {
         "submitUrl": string;
@@ -72,7 +71,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface LeeduForm {
-        "config"?: FormConfig;
+        "config"?: string;
         /**
           * @default false
          */
@@ -81,6 +80,7 @@ declare namespace LocalJSX {
         "onFieldChange"?: (event: LeeduFormCustomEvent<{ fieldName: string; value: any; formData: any }>) => void;
         "onFormReset"?: (event: LeeduFormCustomEvent<void>) => void;
         "onFormSubmit"?: (event: LeeduFormCustomEvent<{ data: any; isValid: boolean }>) => void;
+        "previewOnly"?: boolean;
     }
     interface LeeduFormTest {
         "onFormSubmit"?: (event: LeeduFormTestCustomEvent<{ data: any; type: 'error'| 'success' }>) => void;
