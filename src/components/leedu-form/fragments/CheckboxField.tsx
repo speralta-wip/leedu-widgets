@@ -2,18 +2,20 @@ import { FunctionalComponent, h } from '@stencil/core';
 
 interface CheckboxFieldProps {
   name?: string;
+  type?: 'checkbox'| 'radio';
   label?: string;
   value?: any;
   required?: boolean;
   error?: string;
   className?: string;
   checked?: boolean;
-  onInputChange?: (name: string, value: any) => void;
+  onInputChange?: (name: string, value: any, target?: HTMLInputElement) => void;
   disabled?: boolean;
 }
 
 export const CheckboxField: FunctionalComponent<CheckboxFieldProps> = ({
                                                                          name,
+                                                                          type,
                                                                          label,
                                                                          value,
                                                                          required,
@@ -24,11 +26,9 @@ export const CheckboxField: FunctionalComponent<CheckboxFieldProps> = ({
                                                                        }) => {
   const handleCheckbox = (e) => {
     const target = (e.target as HTMLInputElement);
-    let value = 0;
-    if (target.checked) {
-      value = 1;
-    }
-    typeof onInputChange === 'function' ? onInputChange(name, value) : null;
+    const value = target.value;
+
+    typeof onInputChange === 'function' ? onInputChange(name, value, target) : null;
   };
   return (
     <div class={{
@@ -39,7 +39,7 @@ export const CheckboxField: FunctionalComponent<CheckboxFieldProps> = ({
           <span class="pub-form-check__box">
             <input
               disabled={disabled}
-              type="checkbox"
+              type={type ?? 'checkbox'}
               name={name}
               checked={checked ?? false}
               required={required ?? false}

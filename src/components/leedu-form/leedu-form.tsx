@@ -1,4 +1,4 @@
-import { Component, Prop, State, Event, EventEmitter, h, Watch } from '@stencil/core';
+import { Component, Prop, State, Event, EventEmitter, h, Watch, Element } from '@stencil/core';
 import { schoolYearOptions } from '../../utils/utils';
 
 import { SelectField } from './fragments/SelectField';
@@ -79,7 +79,7 @@ export interface HiddenInput{
 })
 
 export class LeeduForm {
-
+  @Element() el: HTMLElement;
   private formEl!: HTMLFormElement;
   private recaptchaInput: HTMLInputElement;
 
@@ -91,6 +91,7 @@ export class LeeduForm {
   @Prop() formUrl: string;
   @Prop() disabled: boolean = false;
 
+  @State() allowMultipleEvents: boolean = false;
   @State() recaptchaKey: string;
   @State() formData: { [key: string]: any } = {};
   @State() errors: { [key: string]: string } = {};
@@ -128,6 +129,9 @@ export class LeeduForm {
     if (this.parsedConfig?.recaptcha_key){
       this.recaptchaKey = this.parsedConfig.recaptcha_key
     }
+
+    this.allowMultipleEvents = this.parsedConfig?.form?.allow_multiple_events ?? false;
+
     this.loadFont();
   }
 
@@ -228,6 +232,34 @@ export class LeeduForm {
       ...this.formData,
       [fieldName]: value
     };
+
+    this.fieldChange.emit({
+      fieldName,
+      value,
+      formData: this.formData
+    });
+  }
+
+  private handleEventsChange = (fieldName: string, value: any, target?: HTMLInputElement) => {
+    console.log(fieldName, value, target);
+    //this.formData actually just to test but could be useful in a future
+    this.formData = {
+      ...this.formData,
+      [fieldName]: value
+    };
+
+    if (!this.allowMultipleEvents){
+      const groupEl = target.closest('[data-events-group]');
+      const groupInputs = groupEl.querySelectorAll(`input[name="${fieldName}"]`);
+      if(target.checked){
+        groupInputs.forEach((input:HTMLInputElement) =>{
+          if (input.value != value) {
+            input.checked = false;
+          }
+        })
+      }
+      console.log(groupInputs);
+    }
 
     this.fieldChange.emit({
       fieldName,
@@ -428,7 +460,7 @@ export class LeeduForm {
                 {Object.values(form.schools ?? {})
                   .filter((school) => school?.events)
                   .map((school) => (
-                    <div class="public-form__checkbox-group" key={school.id}>
+                    <div class="public-form__checkbox-group" data-events-group={school.id}>
                       <div class="public-form__checkbox-group__title">
                         {school?.name ?? ''}
                       </div>
@@ -446,7 +478,7 @@ export class LeeduForm {
                             }
                             value={event.id}
                             checked={false}
-                            onInputChange={this.handleInputChange}
+                            onInputChange={this.handleEventsChange}
                           />
                         ))
                       ) : (
