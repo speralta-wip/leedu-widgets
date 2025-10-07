@@ -60,6 +60,7 @@ export interface FormConfig {
   title?: string;
   form?: PublicFormResource;
   recaptcha_key?: string;
+  tracking_pixel_url?: string;
 }
 
 export interface SelectOption{
@@ -133,12 +134,29 @@ export class LeeduForm {
     this.allowMultipleEvents = this.parsedConfig?.form?.allow_multiple_events ?? false;
 
     this.loadFont();
+
+    if (this.parsedConfig?.tracking_pixel_url && this.parsedConfig?.form?.id){
+
+      this.fetchPixel(this.parsedConfig?.tracking_pixel_url, this.parsedConfig?.form?.id);
+    }
   }
 
   componentWillLoad() {
     this.loadMainFontLinks();
     this.parseConfig();
     this.loadUtmInputs();
+  }
+
+  private fetchPixel(pixelUrl: string, formId: string|number){
+    if (!pixelUrl) return;
+    const urlParams = new URLSearchParams(window.location.search)
+    urlParams.set('form_id', `${formId}`)
+    urlParams.set('referrer_url', document.referrer)
+    const newImgSrc = `${pixelUrl}?${urlParams}`;
+    if (sessionStorage.getItem('leeduPixel') === newImgSrc) return;
+    const pixelImg = new Image();
+    pixelImg.src = newImgSrc;
+    sessionStorage.setItem('leeduPixel', pixelImg.src)
   }
 
   private loadMainFontLinks(){
@@ -387,10 +405,10 @@ export class LeeduForm {
               ))}
               {/*STUDENT NAME*/}
               <InputField label={'Nome studente'} name={'first_name'} error={this.errors['first_name'] ?? null}
-                          onInputChange={this.handleInputChange} required={true} />
+                          onInputChange={this.handleInputChange} />
               {/*STUDENT LAST NAME*/}
               <InputField label={'Cognome studente'} name={'last_name'} error={this.errors['last_name'] ?? null}
-                          onInputChange={this.handleInputChange} required={true} />
+                          onInputChange={this.handleInputChange} />
               {/*STUDENT BIRTHDATE */}
               {Boolean(form?.has_birthdate) && (
                 <InputField type={'date'} label={'Data di nascita'} name={'birthdate'}
