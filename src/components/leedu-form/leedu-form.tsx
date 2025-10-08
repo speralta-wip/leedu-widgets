@@ -405,23 +405,23 @@ export class LeeduForm {
               ))}
               {/*STUDENT NAME*/}
               <InputField label={'Nome studente'} name={'first_name'} error={this.errors['first_name'] ?? null}
-                          onInputChange={this.handleInputChange} />
+                          onInputChange={this.handleInputChange} required={true} />
               {/*STUDENT LAST NAME*/}
               <InputField label={'Cognome studente'} name={'last_name'} error={this.errors['last_name'] ?? null}
-                          onInputChange={this.handleInputChange} />
+                          onInputChange={this.handleInputChange} required={true} />
               {/*STUDENT BIRTHDATE */}
               {Boolean(form?.has_birthdate) && (
                 <InputField type={'date'} label={'Data di nascita'} name={'birthdate'}
-                            error={this.errors['birthdate'] ?? null} onInputChange={this.handleInputChange} />
+                            error={this.errors['birthdate'] ?? null} onInputChange={this.handleInputChange} required={true}/>
               )}
               {/*CURRENT SCHOOL */}
               {Boolean(form?.has_current_school) && (
                 <InputField label={'Scuola attuale'} name={'current_school'}
-                            error={this.errors['current_school'] ?? null} onInputChange={this.handleInputChange} />
+                            error={this.errors['current_school'] ?? null} onInputChange={this.handleInputChange} required={true}/>
               )}
               {/*CURRENT GRADE*/}
               {Boolean(form?.has_current_grade) && (
-                <SelectField name={'current_grade'} label={'Classe attuale'}>
+                <SelectField name={'current_grade'} label={'Classe attuale'} required={true}>
                   {Object.entries(
                     form.educationLevelGrades?.data ?? {},
                   ).map(([levelKey, level]) => (
@@ -442,7 +442,7 @@ export class LeeduForm {
               )}
               {/*YEAR OF INTEREST*/}
               {Boolean(form?.has_year_of_interest) && (
-                <SelectField name="year_of_interest" label={'Anno di interesse'}>
+                <SelectField name="year_of_interest" label={'Anno scolastico di interesse'} required={true}>
                   {this.schoolYearOptions.map((year) => (
                     <option value={year.value} key={year.value}>
                       {year.label}
@@ -452,21 +452,21 @@ export class LeeduForm {
               )}
               {/*PARENT EMAIL*/}
               <InputField type={'email'} label={'Email genitore'} name={'email'} error={this.errors['email'] ?? null}
-                          onInputChange={this.handleInputChange} />
+                          onInputChange={this.handleInputChange} required={true}/>
               {/*PARENT FIRST NAME */}
               {Boolean(form?.has_parent_first_name) && (
                 <InputField label={'Nome genitore'} name={'parent_first_name'}
-                            error={this.errors['parent_first_name'] ?? null} onInputChange={this.handleInputChange} />
+                            error={this.errors['parent_first_name'] ?? null} required={true} onInputChange={this.handleInputChange} />
               )}
               {/*PARENT LAST NAME*/}
               {Boolean(form?.has_parent_last_name) && (
                 <InputField label={'Cognome genitore'} name={'parent_last_name'}
-                            error={this.errors['parent_last_name'] ?? null} onInputChange={this.handleInputChange} />
+                            error={this.errors['parent_last_name'] ?? null} required={true} onInputChange={this.handleInputChange} />
               )}
               {/*PARENT PHONE */}
               {Boolean(form?.has_parent_phone) && (
-                <InputField type={'tel'} label={'Telefono genitore'} name={'parent_phone'}
-                            error={this.errors['parent_phone'] ?? null} onInputChange={this.handleInputChange} />
+                <InputField type={'tel'} label={'Telefono genitore'} name={'parent_phone'} validation={{pattern:'[+]{0,}[0-9]{0,}'}}
+                            error={this.errors['parent_phone'] ?? null} required={true} onInputChange={this.handleInputChange} />
               )}
             </div>
 
@@ -521,7 +521,7 @@ export class LeeduForm {
             <div class="public-form__acceptances">
               {/*PRIVACY*/}
               <CheckboxField name={'privacy_acceptance'} label={form?.style?.privacy_text ?? ''} value={1}
-                             required={false} onInputChange={this.handleInputChange} error={'privacy_acceptance' in this.errors ? this.errors['privacy_acceptance'] :null}/>
+                             required={true} onInputChange={this.handleInputChange} error={'privacy_acceptance' in this.errors ? this.errors['privacy_acceptance'] :null}/>
               {/*MARKETING*/}
               {Boolean(form?.has_newsletter_subscription) &&
                 <CheckboxField name={'newsletter_subscription'} label={form?.style?.newsletter_text ?? ''} value={1}
