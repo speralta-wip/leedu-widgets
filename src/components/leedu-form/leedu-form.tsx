@@ -147,6 +147,24 @@ export class LeeduForm {
     this.loadUtmInputs();
   }
 
+  componentDidLoad() {
+    this.injectRecaptchaBadgeStyles();
+  }
+
+  private injectRecaptchaBadgeStyles() {
+    if (!document.getElementById('recaptcha-badge-style')) {
+      const style = document.createElement('style');
+      style.id = 'recaptcha-badge-style';
+      style.textContent = `
+        .grecaptcha-badge {
+          visibility: hidden !important;
+          opacity: 0 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
   private fetchPixel(pixelUrl: string, formId: string|number){
     if (!pixelUrl) return;
     const urlParams = new URLSearchParams(window.location.search)
@@ -535,8 +553,15 @@ export class LeeduForm {
             >
               { this.successMessage ?? 'Invia'}
             </button>
-            <div class="public-form__generic-feedbacks">
 
+            {/*TODO: LDU-489 recaptcha text when recaptcha badge hidden */}
+            <div class="recaptcha-terms">
+              This site is protected by reCAPTCHA and the Google{' '}
+              <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
+              <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+            </div>
+
+            <div class="public-form__generic-feedbacks">
               {/*RECAPTCHA ERROR*/}
               { 'g_recaptcha_response' in this.errors ? (
                 <span class={'error-feedback'}>{this.errors['g_recaptcha_response']}</span>
