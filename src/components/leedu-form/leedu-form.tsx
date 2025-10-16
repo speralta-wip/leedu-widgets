@@ -340,7 +340,7 @@ export class LeeduForm {
         setTimeout(()=>{
           this.successMessage = null;
           this.formEl.reset();
-        },4000)
+        },8000)
       }else{
         console.log('status', response, responseJson);
         this.errors = responseJson?.errors ?? {};
