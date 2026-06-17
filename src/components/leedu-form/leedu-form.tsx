@@ -128,10 +128,10 @@ export class LeeduForm {
 
   @Watch('parsedConfig')
   watchParsedConfig(){
-    const thisYear = new Date().getFullYear() + 1;
+    const thisYear = new Date().getFullYear();
     if (this.parsedConfig?.form?.has_year_of_interest){
-      const startingYear = this.parsedConfig?.form?.year_of_interest_default ? +this.parsedConfig.form.year_of_interest_default: null;
-      this.schoolYearOptions = schoolYearOptions(thisYear,false, startingYear);
+      const startingYear = this.parsedConfig?.form?.year_of_interest_default ? +this.parsedConfig.form.year_of_interest_default: thisYear;
+      this.schoolYearOptions = schoolYearOptions(startingYear,false);
     }
     if (this.parsedConfig?.recaptcha_key){
       this.recaptchaKey = this.parsedConfig.recaptcha_key
@@ -478,17 +478,46 @@ export class LeeduForm {
                 <InputField type={'tel'} label={'Telefono genitore'} name={'parent_phone'} validation={{pattern:'[+]{0,}[0-9]{0,}'}}
                             error={this.errors['parent_phone'] ?? null} required={true} onInputChange={this.handleInputChange} />
               )}
-              {/*HEARD FROM*/}
-              {Boolean(form?.has_heard_from) && (
-                <SelectField name="heard_from" label={'Come ci avete conosciuto'} required={true}>
-                  {this.heardFromOptions.map((year) => (
-                    <option value={year.value} key={year.value}>
-                      {year.label}
-                    </option>
-                  ))}
+              {/*HAS SIBLINGS*/}
+              {Boolean(form?.has_siblings) && (
+                <SelectField name="siblings" label={'Fratelli/sorelle già iscritti '} required={true}>
+                  <option value={0} key={0}>
+                    {'NO'}
+                  </option>
+                  <option value={1} key={1}>
+                    {'SI'}
+                  </option>
                 </SelectField>
               )}
             </div>
+
+            {/*HEARD FROM*/}
+            {Boolean(form?.has_heard_from) && (
+              <div class="public-form__events">
+                <div class="public-form__events__title">
+                  {'Come ci avete conosciuto?'}
+                </div>
+                <div class="public-form__checkbox-group">
+                  <div class="public-form__checkbox-group__title">
+                    {''}
+                  </div>
+                  {this.heardFromOptions.length > 0 && this.heardFromOptions.map((opt) => (
+                    <CheckboxField
+                      name={`heard_from[]`}
+                      label={opt.label}
+                      value={opt.value}
+                      checked={false}
+                    />
+                  ))
+                  }
+                </div>
+                {this.errors.heard_from && (
+                  <div class={'public-form__events__error'}>
+                    {this.errors.heard_from}
+                  </div>
+                )}
+              </div>
+            )}
 
             {Boolean(form?.schools) && (
               <div class="public-form__events">
@@ -539,10 +568,6 @@ export class LeeduForm {
             )}
 
             <div class="public-form__acceptances">
-              {/*HAS SIBLINGS*/}
-              {Boolean(form?.has_siblings) &&
-                <CheckboxField name={'siblings'} label={'Fratelli/sorelle già iscritti'} value={1}
-                               onInputChange={this.handleInputChange} />}
               {/*PRIVACY*/}
               <CheckboxField name={'privacy_acceptance'} label={form?.style?.privacy_text ?? ''} value={1}
                              required={true} onInputChange={this.handleInputChange} error={'privacy_acceptance' in this.errors ? this.errors['privacy_acceptance'] :null}/>
