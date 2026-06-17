@@ -28,8 +28,10 @@ export const config: Config = {
     browserHeadless: "shell",
   },
   devServer: {
-    port: 8080,                    // Cambia porta
-    openBrowser: true,             // Apri browser automaticamente
+    // Aprire il dev server da http://widgets.leedu.local.gd:8080 (host in whitelist TenantCors: *.leedu.local.gd).
+    // Bind di default (0.0.0.0): raggiungibile via il sottodominio, che risolve a 127.0.0.1.
+    port: 8080,
+    openBrowser: false,            // aprire a mano il sottodominio sopra, non localhost
     reloadStrategy: 'pageReload',  // Strategia di reload
   }
 };

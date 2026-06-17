@@ -33,3 +33,12 @@ export function schoolYearOptions(
     value: y,
   }));
 }
+
+export function heardFromOptions(optsObj : object | null){
+  if (!optsObj) return [];
+  return Object.entries(optsObj).map(([key, value]) => ({
+    label: value,
+    value: key,
+  })
+  )
+}

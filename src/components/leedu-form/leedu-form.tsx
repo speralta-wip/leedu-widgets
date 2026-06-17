@@ -1,5 +1,5 @@
 import { Component, Prop, State, Event, EventEmitter, h, Watch, Element } from '@stencil/core';
-import { schoolYearOptions } from '../../utils/utils';
+import { heardFromOptions, schoolYearOptions } from '../../utils/utils';
 
 import { SelectField } from './fragments/SelectField';
 import { CheckboxField } from './fragments/CheckboxField';
@@ -45,14 +45,18 @@ export interface PublicFormResource {
   has_parent_phone?: boolean;
   has_birthdate?: boolean;
   has_current_school?: boolean;
+  has_siblings?: boolean;
+  has_heard_from?: boolean;
   has_current_grade?: boolean;
   has_parent_first_name?: boolean;
   has_parent_last_name?: boolean;
   has_newsletter_subscription?: boolean;
   has_year_of_interest?: boolean;
+  year_of_interest_default?: string | number;
   allow_multiple_events?: boolean;
   style?: FormStyleResource;
   schools?: object;
+  heard_from_options?: object;
   educationLevelGrades?: EducationLevelGradesResource;
 }
 
@@ -102,6 +106,7 @@ export class LeeduForm {
   @State() fontFamily: string;
 
   @State() schoolYearOptions: SelectOption[] = [];
+  @State() heardFromOptions: SelectOption[] = [];
   @State() utmInputs: HiddenInput[] = [];
 
   @Event() formSubmit: EventEmitter<{ data: any; isValid: boolean }>;
@@ -125,7 +130,8 @@ export class LeeduForm {
   watchParsedConfig(){
     const thisYear = new Date().getFullYear() + 1;
     if (this.parsedConfig?.form?.has_year_of_interest){
-      this.schoolYearOptions = schoolYearOptions(thisYear,false);
+      const startingYear = this.parsedConfig?.form?.year_of_interest_default ? +this.parsedConfig.form.year_of_interest_default: null;
+      this.schoolYearOptions = schoolYearOptions(thisYear,false, startingYear);
     }
     if (this.parsedConfig?.recaptcha_key){
       this.recaptchaKey = this.parsedConfig.recaptcha_key
@@ -138,6 +144,10 @@ export class LeeduForm {
     if (this.parsedConfig?.tracking_pixel_url && this.parsedConfig?.form?.id){
 
       this.fetchPixel(this.parsedConfig?.tracking_pixel_url, this.parsedConfig?.form?.id);
+    }
+
+    if (this.parsedConfig?.form?.has_heard_from){
+      this.heardFromOptions = heardFromOptions(this.parsedConfig?.form?.heard_from_options);
     }
   }
 
@@ -468,6 +478,16 @@ export class LeeduForm {
                 <InputField type={'tel'} label={'Telefono genitore'} name={'parent_phone'} validation={{pattern:'[+]{0,}[0-9]{0,}'}}
                             error={this.errors['parent_phone'] ?? null} required={true} onInputChange={this.handleInputChange} />
               )}
+              {/*HEARD FROM*/}
+              {Boolean(form?.has_heard_from) && (
+                <SelectField name="heard_from" label={'Come ci avete conosciuto'} required={true}>
+                  {this.heardFromOptions.map((year) => (
+                    <option value={year.value} key={year.value}>
+                      {year.label}
+                    </option>
+                  ))}
+                </SelectField>
+              )}
             </div>
 
             {Boolean(form?.schools) && (
@@ -519,6 +539,10 @@ export class LeeduForm {
             )}
 
             <div class="public-form__acceptances">
+              {/*HAS SIBLINGS*/}
+              {Boolean(form?.has_siblings) &&
+                <CheckboxField name={'siblings'} label={'Fratelli/sorelle già iscritti'} value={1}
+                               onInputChange={this.handleInputChange} />}
               {/*PRIVACY*/}
               <CheckboxField name={'privacy_acceptance'} label={form?.style?.privacy_text ?? ''} value={1}
                              required={true} onInputChange={this.handleInputChange} error={'privacy_acceptance' in this.errors ? this.errors['privacy_acceptance'] :null}/>
