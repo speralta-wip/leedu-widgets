@@ -1,6 +1,6 @@
 {
   "name": "leedu-widgets",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Leedu webcomponents widgets",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",

@@ -45,6 +45,7 @@ export interface PublicFormResource {
   has_parent_phone?: boolean;
   has_birthdate?: boolean;
   has_current_school?: boolean;
+  institute_name?: string;
   has_siblings?: boolean;
   has_heard_from?: boolean;
   has_current_grade?: boolean;
@@ -426,7 +427,7 @@ export class LeeduForm {
               )}
               {/*CURRENT SCHOOL */}
               {Boolean(form?.has_current_school) && (
-                <InputField label={'Scuola attuale'} name={'current_school'}
+                <InputField label={'Scuola attuale'} name={'current_school'} value={form?.institute_name ?? null}
                             error={this.errors['current_school'] ?? null} onInputChange={this.handleInputChange} required={true}/>
               )}
               {/*CURRENT GRADE*/}
